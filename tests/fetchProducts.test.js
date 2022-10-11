@@ -8,7 +8,7 @@ describe ('1 - Teste a função fetchProducts',() => {
   })
   test('1.2 Execute a função fetchProducts com o argumento computador ', () => { 
      fetchProducts('computador');
-    expect().toHaveBeenCalled();
+    expect(fetch).toHaveBeenCalled();
   })
   test('1.3 Execute a função fetchProducts com o argumento computador ', () => { 
     fetchProducts('computador');
