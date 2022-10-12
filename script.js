@@ -44,7 +44,9 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   section.appendChild(createCustomElement('span', 'item_id', id));
   section.appendChild(createCustomElement('span', 'item__title', title));
   section.appendChild(createProductImageElement(thumbnail));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+  const button = (createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+  button.addEventListener('click', fetchClickedItem);
+  section.appendChild(button);
 
   return section;
 };
