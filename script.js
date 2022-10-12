@@ -37,22 +37,6 @@ const createCustomElement = (element, className, innerText) => {
  * @param {string} product.thumbnail - URL da imagem do produto.
  * @returns {Element} Elemento de produto.
  */
- const createCartItemElement = ({ id, title, price }) => {
-  const cart = document.querySelector('.cart__items');
-  const li = document.createElement('li');
-  li.className = 'cart__item';
-  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
-  cart.appendChild(li);
-};
-
-const fetchClickedItem = async (event) => {
-  const button = event.target;
-  const shopItem = button.parentElement;
-  const id = shopItem.querySelector('.item_id').innerText;
-  const fetchedItem = await fetchItem(id);
-  createCartItemElement(fetchedItem);
-};
 const createProductItemElement = ({ id, title, thumbnail }) => {
   const section = document.createElement('section');
   section.className = 'item';
@@ -60,13 +44,10 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   section.appendChild(createCustomElement('span', 'item_id', id));
   section.appendChild(createCustomElement('span', 'item__title', title));
   section.appendChild(createProductImageElement(thumbnail));
-  const button = (createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-  button.addEventListener('click', fetchClickedItem);
-  section.appendChild(button);
+  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
 
   return section;
 };
-
 async function loadProducts() {
   const itemsList = document.querySelector('.items');
   const products = await fetchProducts('computador');
@@ -89,6 +70,13 @@ const getIdFromProductItem = (product) => product.querySelector('span.id').inner
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
+const createCartItemElement = ({ id, title, price }) => {
+  const li = document.createElement('li');
+  li.className = 'cart__item';
+  li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
+  li.addEventListener('click', cartItemClickListener);
+  return li;
+};
 
 window.onload = async () => {
   await loadProducts();
