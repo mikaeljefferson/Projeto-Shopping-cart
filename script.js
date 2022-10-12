@@ -97,4 +97,3 @@ window.onload = async () => {
 
 getIdFromProductItem();
 createProductItemElement();
-createCartItemElement();
