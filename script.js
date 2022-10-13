@@ -8,6 +8,7 @@
  * @param {string} imageSource - URL da imagem.
  * @returns {Element} Elemento de imagem do produto.
  */
+ 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -81,19 +82,28 @@ const createCartItemElement = ({ id, title, price }) => {
   li.addEventListener('click', cartItemClickListener);
   return li;
 };
+const getCartItems = () => {
+  const items = document.getElementsByTagName('ol')[0].innerHTML;
+  saveCartItems(items);
+};
 const addCart = async (event) => {
   const elementId = event.target.parentNode.firstChild.innerText;
   const cart = document.querySelector('.cart__items');
   const productDetails = await fetchItem(elementId);
   console.log(createCartItemElement(productDetails));
   cart.appendChild(createCartItemElement(productDetails));
+  getCartItems();
 };
 
 window.onload = async () => {
   await loadProducts();
   const addCartButtons = document.querySelectorAll('.item__add');
   addCartButtons.forEach((element) => element.addEventListener('click', addCart));
+  const cart = document.getElementsByTagName('ol')[0];
+  cart.innerHTML = getSavedCartItems();
+  const storageItems = document.querySelectorAll('.cart__item');
+  storageItems.forEach((item) => item.addEventListener('click', cartItemClickListener));
  };
 
-getIdFromProductItem();
 createProductItemElement();
+getIdFromProductItem();
