@@ -39,22 +39,25 @@ const createCustomElement = (element, className, innerText) => {
  * @returns {Element} Elemento de produto.
  */
 const createProductItemElement = ({ id, title, thumbnail }) => {
-  const section = document.createElement('section');
-  section.className = 'item';
+   const section = document.createElement('section');
+   section.className = 'item';
 
   section.appendChild(createCustomElement('span', 'item_id', id));
-  section.appendChild(createCustomElement('span', 'item__title', title));
+   section.appendChild(createCustomElement('span', 'item__title', title));
   section.appendChild(createProductImageElement(thumbnail));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
-
+ section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+ 
   return section;
+ };
+ const appendProduct = async () => {
+  const data = await fetchProducts('compudator');
+  console.log(data.results);
+  const sectionProduct = document.querySelector('.items');
+  data.results.forEach((e) => {
+    const dataInfo = { id: e.id, title: e.title, thumbnail: e.thumbnail };
+    sectionProduct.appendChild(createProductItemElement(dataInfo));
+  });
 };
-async function loadProducts() {
-  const itemsList = document.querySelector('.items');
-  const products = await fetchProducts('computador');
-  products.results
-    .forEach((product) => itemsList.appendChild(createProductItemElement(product)));
-}
 
 /**
  * Função que recupera o ID do produto passado como parâmetro.
@@ -62,7 +65,7 @@ async function loadProducts() {
  * @returns {string} ID do produto.
  */
 
-const getIdFromProductItem = (product) => product.querySelector('span.id').innerText; 
+// const getIdFromProductItem = (product) => product.querySelector('span.id').innerText; 
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -96,7 +99,7 @@ const addCart = async (event) => {
 };
 
 window.onload = async () => {
-  await loadProducts();
+  await appendProduct();
   const addCartButtons = document.querySelectorAll('.item__add');
   addCartButtons.forEach((element) => element.addEventListener('click', addCart));
   const cart = document.getElementsByTagName('ol')[0];
@@ -105,5 +108,4 @@ window.onload = async () => {
   storageItems.forEach((item) => item.addEventListener('click', cartItemClickListener));
  };
 
-createProductItemElement();
-getIdFromProductItem();
+// SgetIdFromProductItem();
