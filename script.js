@@ -75,8 +75,13 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
  * @param {string} product.price - Preço do produto.
  * @returns {Element} Elemento de um item do carrinho.
  */
+ const getCartItems = () => {
+  const items = document.getElementsByTagName('ol')[0].innerHTML;
+  saveCartItems(items);
+};
  const cartItemClickListener = (event) => {
   event.target.remove();
+  getCartItems();
 };
 const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
@@ -85,10 +90,7 @@ const createCartItemElement = ({ id, title, price }) => {
   li.addEventListener('click', cartItemClickListener);
   return li;
 };
-const getCartItems = () => {
-  const items = document.getElementsByTagName('ol')[0].innerHTML;
-  saveCartItems(items);
-};
+
 const addCart = async (event) => {
   const elementId = event.target.parentNode.firstChild.innerText;
   const cart = document.querySelector('.cart__items');
@@ -97,7 +99,11 @@ const addCart = async (event) => {
   cart.appendChild(createCartItemElement(productDetails));
   getCartItems();
 };
-
+const cleanCart = () => {
+  const cart = document.getElementsByTagName('ol')[0];
+  cart.innerHTML = '';
+  getCartItems();
+};
 window.onload = async () => {
   await appendProduct();
   const addCartButtons = document.querySelectorAll('.item__add');
@@ -106,6 +112,8 @@ window.onload = async () => {
   cart.innerHTML = getSavedCartItems();
   const storageItems = document.querySelectorAll('.cart__item');
   storageItems.forEach((item) => item.addEventListener('click', cartItemClickListener));
+  const cleanButton = document.querySelector('.empty-cart');
+  cleanButton.addEventListener('click', cleanCart);
  };
 
 // SgetIdFromProductItem();
